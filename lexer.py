@@ -1,3 +1,5 @@
+import os
+
 operators = ["+", "-", "*", "/", ":-", "=", "==", "===", "<", ">", ".", "(", ")", ",", "[", "]", "|"]
 def get_atom(line):
     def is_atom_char(char):
@@ -85,7 +87,8 @@ def get_token(path):
         for x in get_token_from_string(line):
             yield x
 
-def test():
-    p = get_token('/home/keita/Documents/prolog/gomi.pl')
+def lexer_test():
+    path_name = os.path.normpath(os.path.join(os.path.abspath('test.pl'),''))
+    p = get_token(path_name)
     for token in p:
         print(token)

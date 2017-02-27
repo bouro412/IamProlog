@@ -17,7 +17,7 @@ class Reader:
     def __next__(self):
         def match(token, tag):
             if tag == "lparen":
-                return self.readparen(tag)
+                return self.readparen(tag)[0]
             elif tag == "lbracket":
                 return List(self.readparen(tag))
             elif tag == "atom":
@@ -50,6 +50,7 @@ class Reader:
         raise StopIteration()
 
     def readparen(self, paren_tag):
+         
         lis = []
         term = []
         lp = 0
@@ -60,7 +61,8 @@ class Reader:
                 lis.append(list(Reader(term)))
                 term = []
             elif tag == rtag and lp == lb == 0:
-                lis.append(list(Reader(term)))
+                if term != []:
+                    lis.append(list(Reader(term)))
                 return lis
             elif tag == "lparen":
                 lp += 1
@@ -92,5 +94,7 @@ class Reader:
             raise Exception(tag + " can't make value.")
 
 def read_test():
-    for x in Reader(get_token("/home/keita/Documents/prolog/gomi.pl")):
+    path_name = os.path.normpath(os.path.join(os.path.abspath('test.pl'),''))
+    for x in Reader(get_token(path_name)):
         print(x)
+        
